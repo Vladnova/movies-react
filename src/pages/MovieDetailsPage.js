@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch, NavLink } from 'react-router-dom';
+import Button from '../components/Button/Button';
 import Cast from '../components/Cast';
+import MoviesPreview from '../components/MoviesPreview';
 import Reviews from '../components/Reviews';
 import moviesApi from '../services/movies-api';
 
@@ -9,26 +11,30 @@ class MovieDetailsPage extends Component {
     title: null,
     overview: null,
     genres: [],
-    id: null,
     poster_path: null,
     release_date: null,
     isLoading: false,
     logoSizes: null,
     baseUrl: null,
+    location: null,
   };
 
   async componentDidMount() {
     const { movieId } = this.props.match.params;
-    this.setState({ isLoading: true });
+    const location = this.props.location.state.from;
+
+    this.setState({
+      isLoading: true,
+      location,
+    });
 
     const data = await moviesApi.getMovieDetails(movieId);
-    const { title, overview, genres, id, release_date, poster_path } = data;
+    const { title, overview, genres, release_date, poster_path } = data;
     this.setState({
       title,
       overview,
       genres,
       poster_path,
-      id,
       release_date: release_date.slice(0, 4),
       isLoading: false,
     });
@@ -36,19 +42,15 @@ class MovieDetailsPage extends Component {
     const { base_url, logo_sizes } = await moviesApi.Configuration();
     this.setState({ baseUrl: base_url, logoSizes: logo_sizes[3] });
   }
+
+  handleGoBack = () => {
+    const { history } = this.props;
+    history.push(this.state.location);
+  };
+
   render() {
-    // .slice(0, 3);
-    const {
-      title,
-      overview,
-      genres,
-      poster_path,
-      release_date,
-      id,
-      isLoading,
-      baseUrl,
-      logoSizes,
-    } = this.state;
+    const { isLoading } = this.state;
+    const { url, path } = this.props.match;
 
     return (
       <>
@@ -56,24 +58,19 @@ class MovieDetailsPage extends Component {
           <h1>Loading...</h1>
         ) : (
           <>
-            <h1>Сторінка про один фільм</h1>
-            <img src={`${baseUrl}${logoSizes}${poster_path}`} alt={title} />
-            <h2>
-              {title}: ({release_date})
-            </h2>
-            <h3>Overview</h3>
-            <p>{overview}</p>
-            {genres.map(({ id, name }) => (
-              <li key={id}>{name}</li>
-            ))}
-            <NavLink to={`/movies/${id}/cast`}>Cast</NavLink>
-            <NavLink to={`/movies/${id}/reviews`}>Reviews</NavLink>
+            <Button type="button" onClick={this.handleGoBack}>
+              Go back
+            </Button>
+            <MoviesPreview {...this.state} />
+
+            <NavLink to={`${url}/cast`}>Cast</NavLink>
+            <NavLink to={`${url}/reviews`}>Reviews</NavLink>
           </>
         )}
 
         <Switch>
-          <Route path="/movies/:movieId/cast" component={Cast} />
-          <Route path="/movies/:movieId/reviews" component={Reviews} />
+          <Route path={`${path}/cast`} component={Cast} />
+          <Route path={`${path}/reviews`} component={Reviews} />
         </Switch>
       </>
     );

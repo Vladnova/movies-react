@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Button from '../Button/Button';
 
 class Form extends Component {
   state = {
@@ -13,6 +14,7 @@ class Form extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.onSubmit(this.state.nameMovie);
+
     this.resetForm();
   };
 
@@ -31,7 +33,7 @@ class Form extends Component {
             value={nameMovie}
             onChange={this.handleChange}
           />
-          <button type="submit">Search</button>
+          <Button type="submit">Load Search</Button>
         </form>
       </>
     );

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import Button from '../components/Button/Button';
 import moviesApi from '../services/movies-api';
+import MoviesList from '../components/MoviesList';
 
 class HomePage extends Component {
   state = {
@@ -32,21 +32,18 @@ class HomePage extends Component {
   };
   render() {
     const { movies, logoSizes, baseUrl, isLoading } = this.state;
+
     return (
       <>
-        <ul>
-          {movies.map(({ id, title, poster_path }) => (
-            <li key={id}>
-              <NavLink to={`/movies/${id}`}>
-                <img src={`${baseUrl}${logoSizes}${poster_path}`} alt={title} />
-                {title}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+        <MoviesList
+          searchFilm={movies}
+          logoSizes={logoSizes}
+          baseUrl={baseUrl}
+        />
+
         {isLoading && <h1>Loading...</h1>}
         {movies.length > 0 && !isLoading && (
-          <Button onClick={this.fetchTrendMovies} aria-label="Load More">
+          <Button type="button" onClick={this.fetchTrendMovies}>
             Load More
           </Button>
         )}

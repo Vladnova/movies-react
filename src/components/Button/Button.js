@@ -1,7 +1,7 @@
 import React from 'react';
 
 const Button = ({ children, onClick, ...allyProps }) => (
-  <button type="button" className="IconButton" onClick={onClick} {...allyProps}>
+  <button onClick={onClick} {...allyProps}>
     {children}
   </button>
 );

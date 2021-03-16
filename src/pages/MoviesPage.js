@@ -1,35 +1,54 @@
 import React, { Component } from 'react';
-import { NavLink } from 'react-router-dom';
 import Button from '../components/Button/Button';
 import Form from '../components/Form/Form';
+import MoviesList from '../components/MoviesList';
 import moviesApi from '../services/movies-api';
 
 class MoviesPage extends Component {
   state = {
     searchFilm: [],
     page: 1,
-    searchQuery: '',
+    query: '',
     isLoading: false,
+    logoSizes: null,
+    baseUrl: null,
   };
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
+    if (prevState.query !== this.state.query) {
       this.fetchMovies();
     }
   }
 
+  async componentDidMount() {
+    const { queryProps } = this.props.location;
+
+    if (queryProps) {
+      this.setState({ query: queryProps });
+    }
+  }
+
+  onSaveSearch = () => {
+    const { history, location } = this.props;
+    const { query } = this.state;
+
+    history.push({
+      pathname: location.pathname,
+      search: `queru=${query}`,
+      queryProps: `${query}`,
+    });
+  };
+
   onChangeQuery = value => {
     this.setState({
       searchFilm: [],
-      searchQuery: value,
+      query: value,
       page: 1,
-      logoSizes: null,
-      baseUrl: null,
     });
   };
 
   fetchMovies = async () => {
-    const { searchQuery, page } = this.state;
-    const options = { searchQuery, page };
+    const { query, page } = this.state;
+    const options = { query, page };
 
     this.setState({ isLoading: true });
 
@@ -42,28 +61,23 @@ class MoviesPage extends Component {
       page: prevState.page + 1,
       isLoading: false,
     }));
+    this.onSaveSearch();
   };
 
   render() {
     const { searchFilm, isLoading, baseUrl, logoSizes } = this.state;
+
     return (
       <>
         <Form onSubmit={this.onChangeQuery} />
-
-        <ul>
-          {searchFilm.map(({ id, title, poster_path }) => (
-            <li key={id}>
-              <NavLink to={`/movies/${id}`}>
-                <img src={`${baseUrl}${logoSizes}${poster_path}`} alt={title} />
-                {title}
-                {title}
-              </NavLink>
-            </li>
-          ))}
-        </ul>
+        <MoviesList
+          searchFilm={searchFilm}
+          logoSizes={logoSizes}
+          baseUrl={baseUrl}
+        />
         {isLoading && <h1>Loading...</h1>}
         {searchFilm.length > 0 && !isLoading && (
-          <Button onClick={this.fetchMovies} aria-label="Load More">
+          <Button type="button" onClick={this.fetchMovies}>
             Load More
           </Button>
         )}
