@@ -1,10 +1,13 @@
 import React from 'react';
 import { NavLink, withRouter } from 'react-router-dom';
+import DefaultMovieImg from '../../defaultImg/defaultMovieImg.jpg';
+import styles from './MoviesList.module.css'
+
 
 const MoviesList = ({ searchFilm, baseUrl, logoSizes, location }) => (
-  <ul>
+  <ul className={styles.wrapList}>
     {searchFilm.map(({ id, title, poster_path }) => (
-      <li key={id}>
+      <li key={id} className={styles.item}>
         <NavLink
           to={{
             pathname: `movies/${id}`,
@@ -13,12 +16,13 @@ const MoviesList = ({ searchFilm, baseUrl, logoSizes, location }) => (
             },
           }}
         >
-          <img src={`${baseUrl}${logoSizes}${poster_path}`} alt={title} />
-          {title}
+          <img className={styles.img} src={poster_path ? `${baseUrl}${logoSizes}${poster_path}` : `${DefaultMovieImg}`} alt={title} />
+          <div className={styles.inner}><p className={styles.titleName}>{title}</p></div>
+          
+           
         </NavLink>
       </li>
     ))}
   </ul>
 );
-
 export default withRouter(MoviesList);

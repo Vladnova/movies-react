@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Route, Switch, NavLink } from 'react-router-dom';
-import Button from '../components/Button/Button';
-import Cast from '../components/Cast';
 import MoviesPreview from '../components/MoviesPreview';
-import Reviews from '../components/Reviews';
 import moviesApi from '../services/movies-api';
+import Loader from '../components/Loader';
+import { MovieNav } from '../routes/MovieDetailNavigation';
+import Navigation from '../components/Navigation';
+import ContentNavigation from '../components/Navigation/ContentNavigation';
 
 class MovieDetailsPage extends Component {
   state = {
@@ -17,11 +17,13 @@ class MovieDetailsPage extends Component {
     logoSizes: null,
     baseUrl: null,
     location: null,
+    backdrop_path: null,
+    posterSize: null,
   };
 
   async componentDidMount() {
     const { movieId } = this.props.match.params;
-    const location = this.props.location.state.from;
+    const location = this.props.location.state?.from;
 
     this.setState({
       isLoading: true,
@@ -29,7 +31,14 @@ class MovieDetailsPage extends Component {
     });
 
     const data = await moviesApi.getMovieDetails(movieId);
-    const { title, overview, genres, release_date, poster_path } = data;
+    const {
+      title,
+      overview,
+      genres,
+      release_date,
+      poster_path,
+      backdrop_path,
+    } = data;
     this.setState({
       title,
       overview,
@@ -37,15 +46,20 @@ class MovieDetailsPage extends Component {
       poster_path,
       release_date: release_date.slice(0, 4),
       isLoading: false,
+      backdrop_path,
     });
 
     const { base_url, logo_sizes } = await moviesApi.Configuration();
-    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[3] });
+    this.setState({
+      baseUrl: base_url,
+      logoSizes: logo_sizes[4],
+      posterSize: logo_sizes[6],
+    });
   }
 
   handleGoBack = () => {
     const { history } = this.props;
-    history.push(this.state.location);
+    history.push(this.state?.location || '/');
   };
 
   render() {
@@ -55,23 +69,14 @@ class MovieDetailsPage extends Component {
     return (
       <>
         {isLoading ? (
-          <h1>Loading...</h1>
+          <Loader />
         ) : (
           <>
-            <Button type="button" onClick={this.handleGoBack}>
-              Go back
-            </Button>
-            <MoviesPreview {...this.state} />
-
-            <NavLink to={`${url}/cast`}>Cast</NavLink>
-            <NavLink to={`${url}/reviews`}>Reviews</NavLink>
+            <MoviesPreview {...this.state} handleGoBack={this.handleGoBack} />
+            <Navigation route={MovieNav} url={url} />
+            <ContentNavigation route={MovieNav} url={path} />
           </>
         )}
-
-        <Switch>
-          <Route path={`${path}/cast`} component={Cast} />
-          <Route path={`${path}/reviews`} component={Reviews} />
-        </Switch>
       </>
     );
   }

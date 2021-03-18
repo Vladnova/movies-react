@@ -1,6 +1,7 @@
-import moviesApi from '../services/movies-api';
+import moviesApi from '../../../services/movies-api';
 import React, { Component } from 'react';
-// import { NavLink } from 'react-router-dom';
+import Loader from '../../Loader';
+import defaulActorImg from '../../../defaultImg/defaulActorImg.jpg'
 
 class Cast extends Component {
   state = {
@@ -26,12 +27,12 @@ class Cast extends Component {
     return (
       <>
         {isLoading ? (
-          <h1>Loading...</h1>
+          <Loader />
         ) : (
           <ul>
-            {cast.map(({ name, id, character, profile_path }) => (
+            {cast&&cast.map(({ name, id, character, profile_path }) => (
               <li key={id}>
-                <img src={`${baseUrl}${logoSizes}${profile_path}`} alt={name} />
+                <img src={profile_path?`${baseUrl}${logoSizes}${profile_path}`:`${defaulActorImg}`} alt={name} />
                 <h4>{name}</h4>
                 <p>Character: {character}</p>
               </li>

@@ -42,7 +42,7 @@ const getMovieDetails = async movieId => {
 };
 
 const getMovieCast = async movieId => {
-  try {
+    try {
     const { data } = await axios.get(`/movie/${movieId}/credits`);
     return data.cast;
   } catch (error) {

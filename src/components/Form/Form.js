@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import Button from '../Button/Button';
+import styles from './Form.module.css'
 
 class Form extends Component {
   state = {
-    nameMovie: '',
+    nameMovie: '',    
   };
 
   handleChange = e => {
@@ -12,8 +13,11 @@ class Form extends Component {
   };
 
   handleSubmit = e => {
+    const { nameMovie } = this.state
     e.preventDefault();
-    this.props.onSubmit(this.state.nameMovie);
+    this.setState({invisible: false });
+    this.props.onSubmit(nameMovie);
+    
 
     this.resetForm();
   };
@@ -26,14 +30,18 @@ class Form extends Component {
     const { nameMovie } = this.state;
     return (
       <>
-        <form onSubmit={this.handleSubmit}>
+        <form onSubmit={this.handleSubmit} className={styles.form}>         
           <input
             type="text"
             name="nameMovie"
             value={nameMovie}
             onChange={this.handleChange}
+            className={styles.input}
           />
-          <Button type="submit">Load Search</Button>
+           {nameMovie&&<Button type="submit" className={styles.buttonForm}  >
+            Search
+          </Button>}
+          
         </form>
       </>
     );
@@ -41,3 +49,5 @@ class Form extends Component {
 }
 
 export default Form;
+
+// disabled={true}

@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import Button from '../components/Button/Button';
 import moviesApi from '../services/movies-api';
 import MoviesList from '../components/MoviesList';
+import Loader from '../components/Loader';
+import styles from './allStylesPages.module.css';
 
 class HomePage extends Component {
   state = {
@@ -28,7 +30,7 @@ class HomePage extends Component {
     }));
 
     const { base_url, logo_sizes } = await moviesApi.Configuration();
-    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[3] });
+    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[4] });
   };
   render() {
     const { movies, logoSizes, baseUrl, isLoading } = this.state;
@@ -41,9 +43,9 @@ class HomePage extends Component {
           baseUrl={baseUrl}
         />
 
-        {isLoading && <h1>Loading...</h1>}
+        {isLoading && <Loader/>}
         {movies.length > 0 && !isLoading && (
-          <Button type="button" onClick={this.fetchTrendMovies}>
+          <Button  type="button" onClick={this.fetchTrendMovies} className={styles.button}>
             Load More
           </Button>
         )}

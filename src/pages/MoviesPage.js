@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Button from '../components/Button/Button';
 import Form from '../components/Form/Form';
+import Loader from '../components/Loader';
 import MoviesList from '../components/MoviesList';
 import moviesApi from '../services/movies-api';
+import styles from './allStylesPages.module.css';
 
 class MoviesPage extends Component {
   state = {
@@ -54,7 +56,7 @@ class MoviesPage extends Component {
 
     const movies = await moviesApi.searchMovies(options);
     const { base_url, logo_sizes } = await moviesApi.Configuration();
-    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[3] });
+    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[4] });
 
     this.setState(prevState => ({
       searchFilm: [...prevState.searchFilm, ...movies],
@@ -75,9 +77,9 @@ class MoviesPage extends Component {
           logoSizes={logoSizes}
           baseUrl={baseUrl}
         />
-        {isLoading && <h1>Loading...</h1>}
+        {isLoading && <Loader />}
         {searchFilm.length > 0 && !isLoading && (
-          <Button type="button" onClick={this.fetchMovies}>
+          <Button type="button" onClick={this.fetchMovies} className={styles.button}>
             Load More
           </Button>
         )}

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import moviesApi from '../services/movies-api';
+import moviesApi from '../../../services/movies-api';
+import Loader from '../../Loader';
 
 class Reviews extends Component {
   state = {
@@ -19,19 +20,19 @@ class Reviews extends Component {
     const { reviews, isLoading } = this.state;
     return (
       <>
-        {isLoading && <h1>Loading...</h1>}
-        {reviews.length > 0 ? (
+        {isLoading && <Loader />}
+        {reviews.length > 0 && (
           <ul>
-            {reviews.map(({ author, content, id }) => (
+            {reviews.map(({ author, content, id }) =>(
+          <h3>We don't have any reviews for this movie.</h3>
+        ) &&(
               <li key={id}>
                 <h4>Author: {author}</h4>
                 <p>{content}</p>
               </li>
             ))}
           </ul>
-        ) : (
-          <h3>We don't have any reviews for this movie.</h3>
-        )}
+        )  }
       </>
     );
   }

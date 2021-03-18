@@ -1,0 +1,19 @@
+.wrap{
+    display: flex;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.img{
+    width: 350px;
+    margin-right: 25px;
+}
+
+.inner{
+    max-width: 500px;
+}
+
+.titleFilm{
+    font-size: 35px;
+    
+}
