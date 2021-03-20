@@ -4,7 +4,7 @@ export const MovieNav = [
   {
     name: 'Cast',
     path: '/cast',
-    exact: true,
+    exact: false,
     component: lazy(() =>
       import('../components/MoviesPreview/Cast' /* webpackChunkName: "Cast" */),
     ),
@@ -12,7 +12,7 @@ export const MovieNav = [
   {
     name: 'Reviews',
     path: '/reviews',
-    exact: true,
+    exact: false,
     component: lazy(() =>
       import(
         '../components/MoviesPreview/Reviews' /* webpackChunkName: "Reviews" */

@@ -1,0 +1,35 @@
+.wrapCast {
+  padding: 0 20px 10px;
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 20px;
+}
+
+.itemCast {
+  overflow: hidden;
+  border-radius: 15px;
+  box-shadow: 3px 5px 15px 2px #000000;
+}
+.wrapImg {
+  height: 280px;
+}
+
+.imgCast {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.titleName {
+  margin: 0;
+  font-size: 14px;
+  text-align: center;
+  padding: 5px;
+}
+
+.textCharacter {
+  margin: 0;
+  font-size: 12px;
+  text-align: center;
+  padding: 0 5px 5px;
+}

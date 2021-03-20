@@ -7,15 +7,19 @@ const ContentNavigation = ({ route, url = '' }) => {
   return (
     <Suspense fallback={<Loader />}>
       <Switch>
-        {route.map(({ exact, path, component }) => (
-          <Route
-            key={path}
-            exact={exact}
-            path={`${url}${path}`}
-            component={component}
-          />
-        ))}
-        {/* <Route component={HomePage} /> */}
+        {route.map(({ exact, path, component, name }) => {
+          if (name === 'DefaultPage') {
+            return <Route key={path} component={HomePage} />;
+          }
+          return (
+            <Route
+              key={path}
+              exact={exact}
+              path={`${url}${path}`}
+              component={component}
+            />
+          );
+        })}
       </Switch>
     </Suspense>
   );

@@ -25,11 +25,28 @@ class MovieDetailsPage extends Component {
   async componentDidMount() {
     const { movieId } = this.props.match.params;
     const location = this.props.location.state?.from;
+    const { pathname } = this.props.location;
 
+    const error =
+      pathname !== `/movies/${movieId}` &&
+      pathname !== `/movies/${movieId}/cast` &&
+      pathname !== `/movies/${movieId}/reviews`;
+
+    if (error) {
+      this.backDefaultPages();
+    }
     this.setState({
       isLoading: true,
       location,
     });
+
+    this.MovieDetails(movieId);
+  }
+
+  MovieDetails = async movieId => {
+    if (!Number(movieId)) {
+      this.backDefaultPages();
+    }
 
     const data = await moviesApi.getMovieDetails(movieId);
     const {
@@ -58,7 +75,7 @@ class MovieDetailsPage extends Component {
         logoSizes: logo_sizes[4],
         posterSize: logo_sizes[6],
       });
-  }
+  };
 
   componentWillUnmount() {
     this.canceled = true;
@@ -67,6 +84,11 @@ class MovieDetailsPage extends Component {
   handleGoBack = () => {
     const { history } = this.props;
     history.push(this.state?.location || '/');
+  };
+
+  backDefaultPages = () => {
+    const { history } = this.props;
+    history.push('/');
   };
 
   render() {

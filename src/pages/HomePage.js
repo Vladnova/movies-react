@@ -8,8 +8,10 @@ import styles from './allStylesPages.module.css';
 class HomePage extends Component {
   state = {
     movies: [],
+    constantAmountOfMovies: null,
     logoSizes: null,
     baseUrl: null,
+    logoSizes: null,
     page: 1,
     isLoading: false,
   };
@@ -30,6 +32,7 @@ class HomePage extends Component {
         movies: [...prevState.movies, ...trendingMovies],
         page: prevState.page + 1,
         isLoading: false,
+        constantAmountOfMovies: [...trendingMovies].length,
       }));
 
     const { base_url, logo_sizes } = await moviesApi.Configuration();
@@ -43,7 +46,16 @@ class HomePage extends Component {
   }
 
   render() {
-    const { movies, logoSizes, baseUrl, isLoading } = this.state;
+    const {
+      movies,
+      logoSizes,
+      baseUrl,
+      isLoading,
+      constantAmountOfMovies,
+    } = this.state;
+
+    const showBtn =
+      movies.length > 0 && !isLoading && constantAmountOfMovies > 18;
 
     return (
       <>
@@ -54,7 +66,7 @@ class HomePage extends Component {
         />
 
         {isLoading && <Loader />}
-        {movies.length > 0 && !isLoading && (
+        {showBtn && (
           <Button
             type="button"
             onClick={this.fetchTrendMovies}

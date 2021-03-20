@@ -11,7 +11,8 @@ const Navigation = ({
     <ul className={className[0]}>
       {route.map(
         ({ name, path, exact }) =>
-          name && (
+          name &&
+          name !== 'DefaultPage' && (
             <li key={path} className={className[1]}>
               <NavLink
                 className={className[2]}

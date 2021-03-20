@@ -32,14 +32,13 @@ class Reviews extends Component {
           <ul>
             {reviews.map(({ author, content, id }) => (
               <li key={id}>
-                <h4>Author: {author}</h4>
+                <h4 className={styles.titleAuthor}>Author: {author}</h4>
                 <p>{content}</p>
               </li>
             ))}
           </ul>
         )}
-
-        {!isLoading && (
+        {!isLoading && reviews.length === 0 && (
           <h2 className={styles.titleDefault}>
             We don't have any reviews for this movie
           </h2>

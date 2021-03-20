@@ -6,3 +6,9 @@
   margin: 0;
   text-align: center;
 }
+
+.titleAuthor {
+  margin-bottom: 10px;
+  text-align: center;
+  font-size: 20px;
+}

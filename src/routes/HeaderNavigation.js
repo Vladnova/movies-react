@@ -27,4 +27,12 @@ export const HeaderNav = [
       import('../pages/MoviesPage' /* webpackChunkName: "MoviesPage" */),
     ),
   },
+  {
+    name: 'DefaultPage',
+    path: '',
+    exact: false,
+    component: lazy(() =>
+      import('../pages/HomePage' /* webpackChunkName: "DefaultPage" */),
+    ),
+  },
 ];

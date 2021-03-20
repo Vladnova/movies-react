@@ -9,6 +9,7 @@ import styles from './allStylesPages.module.css';
 class MoviesPage extends Component {
   state = {
     searchFilm: [],
+    constantAmountOfMovies: null,
     page: 1,
     query: '',
     isLoading: false,
@@ -25,6 +26,14 @@ class MoviesPage extends Component {
   }
 
   async componentDidMount() {
+    const { pathname } = this.props.location;
+    // const { query } = this.state;
+
+    // const error = pathname !== `/movies`;
+
+    // if (error) {
+    //   this.backDefaultPages();
+    // }
     const { queryProps } = this.props.location;
 
     if (queryProps) {
@@ -51,6 +60,11 @@ class MoviesPage extends Component {
     });
   };
 
+  // backDefaultPages = () => {
+  //   const { history } = this.props;
+  //   history.push('/');
+  // };
+
   fetchMovies = async () => {
     const { query, page } = this.state;
     const options = { query, page };
@@ -67,6 +81,7 @@ class MoviesPage extends Component {
         searchFilm: [...prevState.searchFilm, ...movies],
         page: prevState.page + 1,
         isLoading: false,
+        constantAmountOfMovies: [...movies].length,
       }));
     this.onSaveSearch();
   };
@@ -76,7 +91,16 @@ class MoviesPage extends Component {
   }
 
   render() {
-    const { searchFilm, isLoading, baseUrl, logoSizes } = this.state;
+    const {
+      searchFilm,
+      isLoading,
+      baseUrl,
+      logoSizes,
+      constantAmountOfMovies,
+    } = this.state;
+
+    const showBtn =
+      searchFilm.length > 0 && !isLoading && constantAmountOfMovies > 18;
 
     return (
       <>
@@ -87,7 +111,7 @@ class MoviesPage extends Component {
           baseUrl={baseUrl}
         />
         {isLoading && <Loader />}
-        {searchFilm.length > 0 && !isLoading && (
+        {showBtn && (
           <Button
             type="button"
             onClick={this.fetchMovies}
