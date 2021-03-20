@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import Button from '../Button/Button';
-import styles from './Form.module.css'
+import Button from '../Button';
+import styles from './Form.module.css';
 
 class Form extends Component {
   state = {
-    nameMovie: '',    
+    nameMovie: '',
   };
 
   handleChange = e => {
@@ -13,11 +13,10 @@ class Form extends Component {
   };
 
   handleSubmit = e => {
-    const { nameMovie } = this.state
+    const { nameMovie } = this.state;
     e.preventDefault();
-    this.setState({invisible: false });
+    this.setState({ invisible: false });
     this.props.onSubmit(nameMovie);
-    
 
     this.resetForm();
   };
@@ -30,7 +29,7 @@ class Form extends Component {
     const { nameMovie } = this.state;
     return (
       <>
-        <form onSubmit={this.handleSubmit} className={styles.form}>         
+        <form onSubmit={this.handleSubmit} className={styles.form}>
           <input
             type="text"
             name="nameMovie"
@@ -38,10 +37,11 @@ class Form extends Component {
             onChange={this.handleChange}
             className={styles.input}
           />
-           {nameMovie&&<Button type="submit" className={styles.buttonForm}  >
-            Search
-          </Button>}
-          
+          {nameMovie && (
+            <Button type="submit" className={styles.buttonForm}>
+              Search
+            </Button>
+          )}
         </form>
       </>
     );

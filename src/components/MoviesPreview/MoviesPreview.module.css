@@ -1,19 +1,61 @@
-.wrap{
-    display: flex;
-    justify-content: center;
-    margin: 0 auto;
+.wrap {
+  display: flex;
+  justify-content: space-evenly;
+  margin: 0 auto;
+  padding: 40px 20px;
+  background-size: cover;
+  background-position: top;
 }
 
-.img{
-    width: 350px;
-    margin-right: 25px;
+.img {
+  width: 350px;
+  box-shadow: 10px 10px 12px 19px rgba(24, 30, 36, 0.54);
 }
 
-.inner{
-    max-width: 500px;
+.inner {
+  max-width: 500px;
+  color: white;
 }
 
-.titleFilm{
-    font-size: 35px;
-    
+.titleFilm {
+  font-size: 35px;
+}
+
+.goBackBtn {
+  background-color: inherit;
+  height: 40px;
+  fill: white;
+  border: none;
+  transform: scale(1);
+  outline: none;
+  transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.goBackBtn:focus,
+.goBackBtn:hover {
+  fill: turquoise;
+  transform: scale(0.9);
+}
+
+/* стилі на Cast та Reviews  */
+
+.wrapper {
+  display: flex;
+  padding: 10px 20px;
+  justify-content: space-between;
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.link {
+  transition: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.link:hover,
+.link:focus {
+  color: turquoise;
+}
+
+.linkActive {
+  color: turquoise;
 }

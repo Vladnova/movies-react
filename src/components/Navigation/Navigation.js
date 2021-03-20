@@ -1,20 +1,30 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import styles from './Navigation.module.css';
 
-const Navigation = ({route, url =''}) =>(
-  <nav >
-      <ul className={styles.wrapList}>
-        {route.map(({ name, path, exact}) =>
-        name&&<li key={path} className={styles.item}>
-            <NavLink className={styles.link} activeClassName={styles.activeLink}
-              exact={exact}
-              to={`${url}${path}`}>
-            {name}
-          </NavLink>
-        </li>
-        )}
-      </ul>
-    </nav>
-  );
+const Navigation = ({
+  route,
+  url = '',
+  className = '',
+  activeClassName = '',
+}) => (
+  <nav>
+    <ul className={className[0]}>
+      {route.map(
+        ({ name, path, exact }) =>
+          name && (
+            <li key={path} className={className[1]}>
+              <NavLink
+                className={className[2]}
+                activeClassName={activeClassName}
+                exact={exact}
+                to={`${url}${path}`}
+              >
+                {name}
+              </NavLink>
+            </li>
+          ),
+      )}
+    </ul>
+  </nav>
+);
 export default Navigation;

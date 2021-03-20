@@ -3,7 +3,6 @@ import MoviesPreview from '../components/MoviesPreview';
 import moviesApi from '../services/movies-api';
 import Loader from '../components/Loader';
 import { MovieNav } from '../routes/MovieDetailNavigation';
-import Navigation from '../components/Navigation';
 import ContentNavigation from '../components/Navigation/ContentNavigation';
 
 class MovieDetailsPage extends Component {
@@ -20,6 +19,8 @@ class MovieDetailsPage extends Component {
     backdrop_path: null,
     posterSize: null,
   };
+
+  canceled: false;
 
   async componentDidMount() {
     const { movieId } = this.props.match.params;
@@ -39,22 +40,28 @@ class MovieDetailsPage extends Component {
       poster_path,
       backdrop_path,
     } = data;
-    this.setState({
-      title,
-      overview,
-      genres,
-      poster_path,
-      release_date: release_date.slice(0, 4),
-      isLoading: false,
-      backdrop_path,
-    });
+    !this.canceled &&
+      this.setState({
+        title,
+        overview,
+        genres,
+        poster_path,
+        release_date: release_date.slice(0, 4),
+        isLoading: false,
+        backdrop_path,
+      });
 
     const { base_url, logo_sizes } = await moviesApi.Configuration();
-    this.setState({
-      baseUrl: base_url,
-      logoSizes: logo_sizes[4],
-      posterSize: logo_sizes[6],
-    });
+    !this.canceled &&
+      this.setState({
+        baseUrl: base_url,
+        logoSizes: logo_sizes[4],
+        posterSize: logo_sizes[6],
+      });
+  }
+
+  componentWillUnmount() {
+    this.canceled = true;
   }
 
   handleGoBack = () => {
@@ -72,8 +79,11 @@ class MovieDetailsPage extends Component {
           <Loader />
         ) : (
           <>
-            <MoviesPreview {...this.state} handleGoBack={this.handleGoBack} />
-            <Navigation route={MovieNav} url={url} />
+            <MoviesPreview
+              state={this.state}
+              GoBack={this.handleGoBack}
+              url={url}
+            />
             <ContentNavigation route={MovieNav} url={path} />
           </>
         )}

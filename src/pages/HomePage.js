@@ -14,6 +14,8 @@ class HomePage extends Component {
     isLoading: false,
   };
 
+  canceled: false;
+
   async componentDidMount() {
     this.fetchTrendMovies();
   }
@@ -23,15 +25,23 @@ class HomePage extends Component {
     this.setState({ isLoading: true });
 
     const trendingMovies = await moviesApi.getMoviesInTrend(page);
-    this.setState(prevState => ({
-      movies: [...prevState.movies, ...trendingMovies],
-      page: prevState.page + 1,
-      isLoading: false,
-    }));
+    !this.canceled &&
+      this.setState(prevState => ({
+        movies: [...prevState.movies, ...trendingMovies],
+        page: prevState.page + 1,
+        isLoading: false,
+      }));
 
     const { base_url, logo_sizes } = await moviesApi.Configuration();
-    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[4] });
+
+    !this.canceled &&
+      this.setState({ baseUrl: base_url, logoSizes: logo_sizes[4] });
   };
+
+  componentWillUnmount() {
+    this.canceled = true;
+  }
+
   render() {
     const { movies, logoSizes, baseUrl, isLoading } = this.state;
 
@@ -43,9 +53,13 @@ class HomePage extends Component {
           baseUrl={baseUrl}
         />
 
-        {isLoading && <Loader/>}
+        {isLoading && <Loader />}
         {movies.length > 0 && !isLoading && (
-          <Button  type="button" onClick={this.fetchTrendMovies} className={styles.button}>
+          <Button
+            type="button"
+            onClick={this.fetchTrendMovies}
+            className={styles.button}
+          >
             Load More
           </Button>
         )}

@@ -1,25 +1,30 @@
-import HomePage from "../pages/HomePage";
-import MovieDetailsPage from "../pages/MovieDetailsPage";
-import MoviesPage from "../pages/MoviesPage";
+import { lazy } from 'react';
 
 export const HeaderNav = [
-    {
-        name: 'Home',
-        path:'/',
-        exact: true,
-        component:HomePage
-        
-    },
-    {
-        name: '',
-        path: '/movies/:movieId',
-        exact: false,
-        component: MovieDetailsPage,
-    },
-    {
-        name: 'Movies',
-        path: '/movies',
-        exact: true,
-        component: MoviesPage        
-    },    
-]
+  {
+    name: 'Home',
+    path: '/',
+    exact: true,
+    component: lazy(() =>
+      import('../pages/HomePage' /* webpackChunkName: "HomePage" */),
+    ),
+  },
+  {
+    name: '',
+    path: '/movies/:movieId',
+    exact: false,
+    component: lazy(() =>
+      import(
+        '../pages/MovieDetailsPage' /* webpackChunkName: "MovieDetailsPage" */
+      ),
+    ),
+  },
+  {
+    name: 'Movies',
+    path: '/movies',
+    exact: true,
+    component: lazy(() =>
+      import('../pages/MoviesPage' /* webpackChunkName: "MoviesPage" */),
+    ),
+  },
+];

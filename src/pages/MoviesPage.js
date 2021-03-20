@@ -15,6 +15,9 @@ class MoviesPage extends Component {
     logoSizes: null,
     baseUrl: null,
   };
+
+  canceled: false;
+
   componentDidUpdate(prevProps, prevState) {
     if (prevState.query !== this.state.query) {
       this.fetchMovies();
@@ -56,15 +59,21 @@ class MoviesPage extends Component {
 
     const movies = await moviesApi.searchMovies(options);
     const { base_url, logo_sizes } = await moviesApi.Configuration();
-    this.setState({ baseUrl: base_url, logoSizes: logo_sizes[4] });
+    !this.canceled &&
+      this.setState({ baseUrl: base_url, logoSizes: logo_sizes[4] });
 
-    this.setState(prevState => ({
-      searchFilm: [...prevState.searchFilm, ...movies],
-      page: prevState.page + 1,
-      isLoading: false,
-    }));
+    !this.canceled &&
+      this.setState(prevState => ({
+        searchFilm: [...prevState.searchFilm, ...movies],
+        page: prevState.page + 1,
+        isLoading: false,
+      }));
     this.onSaveSearch();
   };
+
+  componentWillUnmount() {
+    this.canceled = true;
+  }
 
   render() {
     const { searchFilm, isLoading, baseUrl, logoSizes } = this.state;
@@ -79,7 +88,11 @@ class MoviesPage extends Component {
         />
         {isLoading && <Loader />}
         {searchFilm.length > 0 && !isLoading && (
-          <Button type="button" onClick={this.fetchMovies} className={styles.button}>
+          <Button
+            type="button"
+            onClick={this.fetchMovies}
+            className={styles.button}
+          >
             Load More
           </Button>
         )}
