@@ -33,6 +33,7 @@ class Form extends Component {
           <input
             type="text"
             name="nameMovie"
+            placeholder="Search..."
             value={nameMovie}
             onChange={this.handleChange}
             className={styles.input}
