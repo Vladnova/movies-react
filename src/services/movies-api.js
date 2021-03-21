@@ -33,16 +33,12 @@ const getMoviesInTrend = async (page = 1) => {
 };
 
 const getMovieDetails = async movieId => {
-  try {
-    const { data } = await axios.get(`movie/${movieId}`);
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
+  const { data } = await axios.get(`movie/${movieId}`);
+  return data;
 };
 
 const getMovieCast = async movieId => {
-    try {
+  try {
     const { data } = await axios.get(`/movie/${movieId}/credits`);
     return data.cast;
   } catch (error) {

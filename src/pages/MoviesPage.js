@@ -26,14 +26,6 @@ class MoviesPage extends Component {
   }
 
   async componentDidMount() {
-    const { pathname } = this.props.location;
-    // const { query } = this.state;
-
-    // const error = pathname !== `/movies`;
-
-    // if (error) {
-    //   this.backDefaultPages();
-    // }
     const { queryProps } = this.props.location;
 
     if (queryProps) {
@@ -59,11 +51,6 @@ class MoviesPage extends Component {
       page: 1,
     });
   };
-
-  // backDefaultPages = () => {
-  //   const { history } = this.props;
-  //   history.push('/');
-  // };
 
   fetchMovies = async () => {
     const { query, page } = this.state;

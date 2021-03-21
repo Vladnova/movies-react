@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Button from '../Button';
+import PropTypes from 'prop-types';
 import styles from './Form.module.css';
 
 class Form extends Component {
@@ -38,9 +38,9 @@ class Form extends Component {
             className={styles.input}
           />
           {nameMovie && (
-            <Button type="submit" className={styles.buttonForm}>
+            <button type="submit" className={styles.buttonForm}>
               Search
-            </Button>
+            </button>
           )}
         </form>
       </>
@@ -48,6 +48,8 @@ class Form extends Component {
   }
 }
 
-export default Form;
+Form.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
+};
 
-// disabled={true}
+export default Form;

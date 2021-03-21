@@ -1,4 +1,5 @@
 import React, { Suspense } from 'react';
+import PropTypes from 'prop-types';
 import { Switch, Route } from 'react-router-dom';
 import HomePage from '../../pages/HomePage';
 import Loader from '../Loader';
@@ -23,6 +24,11 @@ const ContentNavigation = ({ route, url = '' }) => {
       </Switch>
     </Suspense>
   );
+};
+
+ContentNavigation.propTypes = {
+  route: PropTypes.arrayOf(PropTypes.object).isRequired,
+  url: PropTypes.string,
 };
 
 export default ContentNavigation;

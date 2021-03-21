@@ -40,41 +40,54 @@ class MovieDetailsPage extends Component {
       location,
     });
 
-    this.MovieDetails(movieId);
+    this.getMovieDetails(movieId);
+    this.getMovieImg();
   }
 
-  MovieDetails = async movieId => {
+  getMovieDetails = async movieId => {
     if (!Number(movieId)) {
       this.backDefaultPages();
     }
-
-    const data = await moviesApi.getMovieDetails(movieId);
-    const {
-      title,
-      overview,
-      genres,
-      release_date,
-      poster_path,
-      backdrop_path,
-    } = data;
-    !this.canceled &&
-      this.setState({
+    try {
+      const data = await moviesApi.getMovieDetails(movieId);
+      const {
         title,
         overview,
         genres,
+        release_date,
         poster_path,
-        release_date: release_date.slice(0, 4),
-        isLoading: false,
         backdrop_path,
-      });
+      } = data;
 
-    const { base_url, logo_sizes } = await moviesApi.Configuration();
-    !this.canceled &&
-      this.setState({
-        baseUrl: base_url,
-        logoSizes: logo_sizes[4],
-        posterSize: logo_sizes[6],
-      });
+      !this.canceled &&
+        this.setState({
+          title,
+          overview,
+          genres,
+          poster_path,
+          release_date: release_date.slice(0, 4),
+          isLoading: false,
+          backdrop_path,
+        });
+    } catch ({ response }) {
+      if (response.status) {
+        this.backDefaultPages();
+      }
+    }
+  };
+
+  getMovieImg = async () => {
+    try {
+      const { base_url, logo_sizes } = await moviesApi.Configuration();
+      !this.canceled &&
+        this.setState({
+          baseUrl: base_url,
+          logoSizes: logo_sizes[4],
+          posterSize: logo_sizes[6],
+        });
+    } catch (status) {
+      console.log(status);
+    }
   };
 
   componentWillUnmount() {

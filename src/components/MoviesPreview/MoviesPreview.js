@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Button from '../Button';
 import { ReactComponent as GoBackIcon } from '../../icons/goBack.svg';
 import Navigation from '../Navigation';
@@ -53,6 +54,12 @@ const MoviesPreview = ({ state, GoBack, url = '' }) => {
       />
     </>
   );
+};
+
+MoviesPreview.propTypes = {
+  state: PropTypes.object.isRequired,
+  GoBack: PropTypes.func.isRequired,
+  url: PropTypes.string,
 };
 
 export default MoviesPreview;

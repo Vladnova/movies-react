@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { NavLink, withRouter } from 'react-router-dom';
 import DefaultMovieImg from '../../defaultImg/defaultMovieImg.jpg';
 import styles from './MoviesList.module.css';
@@ -29,4 +30,18 @@ const MoviesList = ({ searchFilm, baseUrl, logoSizes, location }) => (
     ))}
   </ul>
 );
+
+MoviesList.defaultProps = {
+  searchFilm: [],
+  baseUrl: '',
+  logoSizes: '',
+};
+
+MoviesList.propTypes = {
+  searchFilm: PropTypes.arrayOf(PropTypes.object),
+  baseUrl: PropTypes.string,
+  logoSizes: PropTypes.string,
+  location: PropTypes.object.isRequired,
+};
+
 export default withRouter(MoviesList);
